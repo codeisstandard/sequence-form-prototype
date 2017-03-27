@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "main": "index.html",
+  "scripts": {
+	  "dev-server": "browser-sync --port 4000 --server \"dev-server\" start --files \"dev-server/**/*.html\" \"dev-server/**/*.css\" \"dev-server/**/*.js\" "
+  },
+  "author": "Cody Lindley <cody.lindley@telerik.com>",
+  "license": "Apache-2.0",
+  "devDependencies": {
+	  "browser-sync": "^2.12.3"
+  }
+}
