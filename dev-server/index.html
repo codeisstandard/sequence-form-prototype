@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Kendo Form Prototype</title>
+    <title>Sequence Form Prototype</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -12,7 +12,8 @@
 
     <!-- common CSS -->
     <link rel="stylesheet" href="./bower_packages/kendo-ui/styles/kendo.common.min.css" />
-
+    <link rel="stylesheet" href="./bower_packages/kendo-ui/styles/kendo.default.mobile.min.css" />
+    <link rel="stylesheet" href="./bower_packages/kendo-ui/styles/kendo.default.min.css" />
     <!-- CSS theme -->
     <link rel="stylesheet" href="./bower_packages/kendo-ui/styles/kendo.office365.min.css" />
 
@@ -34,50 +35,77 @@
     <form>
       <h4>Autocomplete Example</h4>
       <input id="countries-auto-complete" style="width: 100%;" />
-      <div class="demo-hint">Start typing the name of a country</div>
       <h4>Drop Down Example</h4>
-        <input id="countries-dropdown" style="width: 100%" />
+      <input id="countries-dropdown" style="width: 100%" />
+      <h4>Date Picker Example</h4>
+      <input id="datepicker" value="03/01/1999" />
+      <input id="age" disabled />
+      <div class="demo-hint">Age calculated from selected Date</div>
     </form>
   </div>
-    <!-- <h4>Show e-mails from:</h4>
-	<form>
-	    <input id="datepicker" value="10/10/2011" />
+  <div id="example">
+    <div class="demo-section">
+        <div class="settings-head"></div>
+        <ul>
+            <li>Autocomplete <input type="checkbox" id="autocomplete-switch" checked="checked" /></li>
+            <li>Drop Down Example <input id="dropdown-switch" checked="checked" /></li>
+            <li>Date Picker Example <input id="dob-switch" checked="checked"/></li>
+        </ul>
+    </div>
 
-	    <h4 style="margin-top: 2em;">Add to archive mail from:</h4>
-	    <input id="monthpicker" value="November 2011" />
-	</form> -->
+    <style>
+        .demo-section ul {
+            margin: 0;
+            padding: 0;
+        }
+        .demo-section ul li {
+            margin: 0;
+            padding: 10px 10px 10px 20px;
+            min-height: 28px;
+            line-height: 28px;
+            vertical-align: middle;
+            border-top: 1px solid rgba(128,128,128,.5);
+        }
+        .demo-section {
+            min-width: 220px;
+            margin-top: 50px;
+            padding: 0;
+        }
+        .demo-section ul li .km-switch {
+            float: right;
+        }
+        .settings-head {
+            height: 66px;
+
+        }
+    </style>
+  </div>
     <script>
         $(document).ready(function() {
             // create DatePicker from input HTML element
             $("#datepicker").kendoDatePicker();
+            $("#datepicker").on('change', function(){
+              var dob = new Date($(this).val())
+              $("#age").val(~~((Date.now() - dob) / (31557600000)))
+            })
 
-            $("#monthpicker").kendoDatePicker({
-                // defines the start view
-                start: "year",
-                // defines when the calendar should return date
-                depth: "year",
-                // display month and year in the input
-                format: "MMMM yyyy"
-            });
-
-            $.ajax({
-                url:  'https://restcountries.eu/rest/v2/all?fields=name',
-                type: 'get',
-                success: function(response){
-                  var countryNames = [];
-                  for (i = 0; i < response.length; i++){
-                    countryNames.push(response[i].name)
+            //create AutoComplete UI component
+            $("#countries-auto-complete").kendoAutoComplete({
+              dataTextField: "name",
+              dataValueField: "name",
+              dataSource: {
+                  transport: {
+                      read: {
+                          dataType: "json",
+                          url: "https://restcountries.eu/rest/v2/all?fields=name",
+                      }
                   }
-                  //create AutoComplete UI component
-                  $("#countries-auto-complete").kendoAutoComplete({
-                      dataSource: countryNames,
-                      filter: "startswith",
-                      placeholder: "Select country...",
-                      separator: ", "
-                  });
-                }
+              },
+                filter: "startswith",
+                placeholder: "Start typing the name of a country..."
             });
 
+            //create DropDown UI component
             $("#countries-dropdown").kendoDropDownList({
               dataTextField: "name",
               dataValueField: "name",
@@ -90,6 +118,17 @@
                   }
               }
             });
+
+            $("#autocomplete-switch").kendoMobileSwitch({
+              checked: true
+            });
+            $("#dropdown-switch").kendoMobileSwitch({
+              checked: true
+            });
+            $("#dob-switch").kendoMobileSwitch({
+              checked: true
+            });
+
         });
     </script>
 </body>
