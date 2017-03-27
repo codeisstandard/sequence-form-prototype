@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Kendo UI Core jQuery Boilerplate</title>
+    <title>Kendo Form Prototype</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -30,13 +30,22 @@
 </head>
 
 <body>
-    <h4>Show e-mails from:</h4>
+  <div class="demo-section k-content">
+    <form>
+      <h4>Autocomplete Example</h4>
+      <input id="countries-auto-complete" style="width: 100%;" />
+      <div class="demo-hint">Start typing the name of a country</div>
+      <h4>Drop Down Example</h4>
+        <input id="countries-dropdown" style="width: 100%" />
+    </form>
+  </div>
+    <!-- <h4>Show e-mails from:</h4>
 	<form>
 	    <input id="datepicker" value="10/10/2011" />
 
 	    <h4 style="margin-top: 2em;">Add to archive mail from:</h4>
 	    <input id="monthpicker" value="November 2011" />
-	</form>
+	</form> -->
     <script>
         $(document).ready(function() {
             // create DatePicker from input HTML element
@@ -49,6 +58,37 @@
                 depth: "year",
                 // display month and year in the input
                 format: "MMMM yyyy"
+            });
+
+            $.ajax({
+                url:  'https://restcountries.eu/rest/v2/all?fields=name',
+                type: 'get',
+                success: function(response){
+                  var countryNames = [];
+                  for (i = 0; i < response.length; i++){
+                    countryNames.push(response[i].name)
+                  }
+                  //create AutoComplete UI component
+                  $("#countries-auto-complete").kendoAutoComplete({
+                      dataSource: countryNames,
+                      filter: "startswith",
+                      placeholder: "Select country...",
+                      separator: ", "
+                  });
+                }
+            });
+
+            $("#countries-dropdown").kendoDropDownList({
+              dataTextField: "name",
+              dataValueField: "name",
+              dataSource: {
+                  transport: {
+                      read: {
+                          dataType: "json",
+                          url: "https://restcountries.eu/rest/v2/all?fields=name",
+                      }
+                  }
+              }
             });
         });
     </script>
