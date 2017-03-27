@@ -33,23 +33,29 @@
 <body>
   <div class="demo-section k-content">
     <form>
-      <h4>Autocomplete Example</h4>
-      <input id="countries-auto-complete" style="width: 100%;" />
-      <h4>Drop Down Example</h4>
-      <input id="countries-dropdown" style="width: 100%" />
-      <h4>Date Picker Example</h4>
-      <input id="datepicker" value="03/01/1999" />
-      <input id="age" disabled />
-      <div class="demo-hint">Age calculated from selected Date</div>
+      <div class="first-field">
+        <h4>Autocomplete Example</h4>
+        <input id="countries-auto-complete" style="width: 100%;" />
+      </div>
+      <div class="second-field">
+        <h4 id="countries-drop-label">Drop Down Example</h4>
+        <input id="countries-dropdown" style="width: 100%" />
+      </div>
+      <div class="third-field">
+        <h4 id="date-label">Date Picker Example</h4>
+        <input id="datepicker" value="03/01/1999" />
+        <input id="age" disabled />
+        <div class="demo-hint">Age calculated from selected Date</div>
+      </div>
     </form>
   </div>
   <div id="example">
     <div class="demo-section">
-        <div class="settings-head"></div>
+        <div class="settings-head"><h4>Toggle fields</h4></div>
         <ul>
-            <li>Autocomplete <input type="checkbox" id="autocomplete-switch" checked="checked" /></li>
-            <li>Drop Down Example <input id="dropdown-switch" checked="checked" /></li>
-            <li>Date Picker Example <input id="dob-switch" checked="checked"/></li>
+            <li>Autocomplete <button id="autocomplete-switch" type="button"><span class="k-icon"></span> Toggle </button></li>
+            <li>Drop Down Example <button id="dropdown-switch" type="button"><span class="k-icon"></span> Toggle </button></li>
+            <li>Date Picker Example <button id="dob-switch" type="button"><span class="k-icon"></span> Toggle </button></li>
         </ul>
     </div>
 
@@ -118,16 +124,26 @@
                   }
               }
             });
+            $("#autocomplete-switch").kendoButton({
+              icon: "toggle",
+              click: function(e){
+                $(".first-field").toggle();
+              }
+            });
+            $("#dropdown-switch").kendoButton({
+              icon: "toggle",
+              click: function(e){
+                $(".second-field").toggle();
+              }
+            });
+            $("#dob-switch").kendoButton({
+              icon: "toggle",
+              click: function(e){
+                $(".third-field").toggle();
+              }
+            });
 
-            $("#autocomplete-switch").kendoMobileSwitch({
-              checked: true
-            });
-            $("#dropdown-switch").kendoMobileSwitch({
-              checked: true
-            });
-            $("#dob-switch").kendoMobileSwitch({
-              checked: true
-            });
+
 
         });
     </script>
